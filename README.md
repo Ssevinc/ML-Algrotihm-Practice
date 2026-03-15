@@ -4,3 +4,6 @@ A collection of fundamental machine learning algorithms implemented as part of m
 These implementations were originally developed while studying the foundations of machine learning and have been reorganized into this repository as a consolidated reference for algorithm practice and experimentation.
 
 The focus of this repository is on understanding how core algorithms work.
+
+Note: Some implementations were originally written during earlier stages of my
+machine learning studies and later reorganized into this repository for clarity.
