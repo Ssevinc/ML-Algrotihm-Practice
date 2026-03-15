@@ -1,0 +1,734 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "35247e5b",
+   "metadata": {
+    "papermill": {
+     "duration": 0.003015,
+     "end_time": "2026-03-15T22:07:28.302018",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:28.299003",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "b86cf90d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:28.309252Z",
+     "iopub.status.busy": "2026-03-15T22:07:28.308781Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.308899Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.307736Z"
+    },
+    "papermill": {
+     "duration": 3.005825,
+     "end_time": "2026-03-15T22:07:31.310917",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:28.305092",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.datasets import load_breast_cancer\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "import pandas as pd\n",
+    "import seaborn as sns\n",
+    "from sklearn.svm import SVC\n",
+    "from sklearn.metrics import accuracy_score\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "ee9825bd",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.317723Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.317209Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.332845Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.331778Z"
+    },
+    "papermill": {
+     "duration": 0.020769,
+     "end_time": "2026-03-15T22:07:31.334606",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.313837",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "data = load_breast_cancer()\n",
+    "X,y = data.data,data.target"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "c95b2bd6",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.341214Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.340925Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.382338Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.381302Z"
+    },
+    "papermill": {
+     "duration": 0.04673,
+     "end_time": "2026-03-15T22:07:31.384123",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.337393",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>mean radius</th>\n",
+       "      <th>mean texture</th>\n",
+       "      <th>mean perimeter</th>\n",
+       "      <th>mean area</th>\n",
+       "      <th>mean smoothness</th>\n",
+       "      <th>mean compactness</th>\n",
+       "      <th>mean concavity</th>\n",
+       "      <th>mean concave points</th>\n",
+       "      <th>mean symmetry</th>\n",
+       "      <th>mean fractal dimension</th>\n",
+       "      <th>...</th>\n",
+       "      <th>worst radius</th>\n",
+       "      <th>worst texture</th>\n",
+       "      <th>worst perimeter</th>\n",
+       "      <th>worst area</th>\n",
+       "      <th>worst smoothness</th>\n",
+       "      <th>worst compactness</th>\n",
+       "      <th>worst concavity</th>\n",
+       "      <th>worst concave points</th>\n",
+       "      <th>worst symmetry</th>\n",
+       "      <th>worst fractal dimension</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>17.99</td>\n",
+       "      <td>10.38</td>\n",
+       "      <td>122.80</td>\n",
+       "      <td>1001.0</td>\n",
+       "      <td>0.11840</td>\n",
+       "      <td>0.27760</td>\n",
+       "      <td>0.3001</td>\n",
+       "      <td>0.14710</td>\n",
+       "      <td>0.2419</td>\n",
+       "      <td>0.07871</td>\n",
+       "      <td>...</td>\n",
+       "      <td>25.38</td>\n",
+       "      <td>17.33</td>\n",
+       "      <td>184.60</td>\n",
+       "      <td>2019.0</td>\n",
+       "      <td>0.1622</td>\n",
+       "      <td>0.6656</td>\n",
+       "      <td>0.7119</td>\n",
+       "      <td>0.2654</td>\n",
+       "      <td>0.4601</td>\n",
+       "      <td>0.11890</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>20.57</td>\n",
+       "      <td>17.77</td>\n",
+       "      <td>132.90</td>\n",
+       "      <td>1326.0</td>\n",
+       "      <td>0.08474</td>\n",
+       "      <td>0.07864</td>\n",
+       "      <td>0.0869</td>\n",
+       "      <td>0.07017</td>\n",
+       "      <td>0.1812</td>\n",
+       "      <td>0.05667</td>\n",
+       "      <td>...</td>\n",
+       "      <td>24.99</td>\n",
+       "      <td>23.41</td>\n",
+       "      <td>158.80</td>\n",
+       "      <td>1956.0</td>\n",
+       "      <td>0.1238</td>\n",
+       "      <td>0.1866</td>\n",
+       "      <td>0.2416</td>\n",
+       "      <td>0.1860</td>\n",
+       "      <td>0.2750</td>\n",
+       "      <td>0.08902</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>19.69</td>\n",
+       "      <td>21.25</td>\n",
+       "      <td>130.00</td>\n",
+       "      <td>1203.0</td>\n",
+       "      <td>0.10960</td>\n",
+       "      <td>0.15990</td>\n",
+       "      <td>0.1974</td>\n",
+       "      <td>0.12790</td>\n",
+       "      <td>0.2069</td>\n",
+       "      <td>0.05999</td>\n",
+       "      <td>...</td>\n",
+       "      <td>23.57</td>\n",
+       "      <td>25.53</td>\n",
+       "      <td>152.50</td>\n",
+       "      <td>1709.0</td>\n",
+       "      <td>0.1444</td>\n",
+       "      <td>0.4245</td>\n",
+       "      <td>0.4504</td>\n",
+       "      <td>0.2430</td>\n",
+       "      <td>0.3613</td>\n",
+       "      <td>0.08758</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>11.42</td>\n",
+       "      <td>20.38</td>\n",
+       "      <td>77.58</td>\n",
+       "      <td>386.1</td>\n",
+       "      <td>0.14250</td>\n",
+       "      <td>0.28390</td>\n",
+       "      <td>0.2414</td>\n",
+       "      <td>0.10520</td>\n",
+       "      <td>0.2597</td>\n",
+       "      <td>0.09744</td>\n",
+       "      <td>...</td>\n",
+       "      <td>14.91</td>\n",
+       "      <td>26.50</td>\n",
+       "      <td>98.87</td>\n",
+       "      <td>567.7</td>\n",
+       "      <td>0.2098</td>\n",
+       "      <td>0.8663</td>\n",
+       "      <td>0.6869</td>\n",
+       "      <td>0.2575</td>\n",
+       "      <td>0.6638</td>\n",
+       "      <td>0.17300</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>20.29</td>\n",
+       "      <td>14.34</td>\n",
+       "      <td>135.10</td>\n",
+       "      <td>1297.0</td>\n",
+       "      <td>0.10030</td>\n",
+       "      <td>0.13280</td>\n",
+       "      <td>0.1980</td>\n",
+       "      <td>0.10430</td>\n",
+       "      <td>0.1809</td>\n",
+       "      <td>0.05883</td>\n",
+       "      <td>...</td>\n",
+       "      <td>22.54</td>\n",
+       "      <td>16.67</td>\n",
+       "      <td>152.20</td>\n",
+       "      <td>1575.0</td>\n",
+       "      <td>0.1374</td>\n",
+       "      <td>0.2050</td>\n",
+       "      <td>0.4000</td>\n",
+       "      <td>0.1625</td>\n",
+       "      <td>0.2364</td>\n",
+       "      <td>0.07678</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 30 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   mean radius  mean texture  mean perimeter  mean area  mean smoothness  \\\n",
+       "0        17.99         10.38          122.80     1001.0          0.11840   \n",
+       "1        20.57         17.77          132.90     1326.0          0.08474   \n",
+       "2        19.69         21.25          130.00     1203.0          0.10960   \n",
+       "3        11.42         20.38           77.58      386.1          0.14250   \n",
+       "4        20.29         14.34          135.10     1297.0          0.10030   \n",
+       "\n",
+       "   mean compactness  mean concavity  mean concave points  mean symmetry  \\\n",
+       "0           0.27760          0.3001              0.14710         0.2419   \n",
+       "1           0.07864          0.0869              0.07017         0.1812   \n",
+       "2           0.15990          0.1974              0.12790         0.2069   \n",
+       "3           0.28390          0.2414              0.10520         0.2597   \n",
+       "4           0.13280          0.1980              0.10430         0.1809   \n",
+       "\n",
+       "   mean fractal dimension  ...  worst radius  worst texture  worst perimeter  \\\n",
+       "0                 0.07871  ...         25.38          17.33           184.60   \n",
+       "1                 0.05667  ...         24.99          23.41           158.80   \n",
+       "2                 0.05999  ...         23.57          25.53           152.50   \n",
+       "3                 0.09744  ...         14.91          26.50            98.87   \n",
+       "4                 0.05883  ...         22.54          16.67           152.20   \n",
+       "\n",
+       "   worst area  worst smoothness  worst compactness  worst concavity  \\\n",
+       "0      2019.0            0.1622             0.6656           0.7119   \n",
+       "1      1956.0            0.1238             0.1866           0.2416   \n",
+       "2      1709.0            0.1444             0.4245           0.4504   \n",
+       "3       567.7            0.2098             0.8663           0.6869   \n",
+       "4      1575.0            0.1374             0.2050           0.4000   \n",
+       "\n",
+       "   worst concave points  worst symmetry  worst fractal dimension  \n",
+       "0                0.2654          0.4601                  0.11890  \n",
+       "1                0.1860          0.2750                  0.08902  \n",
+       "2                0.2430          0.3613                  0.08758  \n",
+       "3                0.2575          0.6638                  0.17300  \n",
+       "4                0.1625          0.2364                  0.07678  \n",
+       "\n",
+       "[5 rows x 30 columns]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "\n",
+    "df = pd.DataFrame(data= data.data, columns = data.feature_names)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "1f4c6bb8",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.391363Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.391077Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.396640Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.395715Z"
+    },
+    "papermill": {
+     "duration": 0.010886,
+     "end_time": "2026-03-15T22:07:31.398242",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.387356",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(569, 30)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.shape\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "6835f324",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.405704Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.405324Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.426131Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.425243Z"
+    },
+    "papermill": {
+     "duration": 0.026103,
+     "end_time": "2026-03-15T22:07:31.427742",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.401639",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<bound method DataFrame.info of      mean radius  mean texture  mean perimeter  mean area  mean smoothness  \\\n",
+       "0          17.99         10.38          122.80     1001.0          0.11840   \n",
+       "1          20.57         17.77          132.90     1326.0          0.08474   \n",
+       "2          19.69         21.25          130.00     1203.0          0.10960   \n",
+       "3          11.42         20.38           77.58      386.1          0.14250   \n",
+       "4          20.29         14.34          135.10     1297.0          0.10030   \n",
+       "..           ...           ...             ...        ...              ...   \n",
+       "564        21.56         22.39          142.00     1479.0          0.11100   \n",
+       "565        20.13         28.25          131.20     1261.0          0.09780   \n",
+       "566        16.60         28.08          108.30      858.1          0.08455   \n",
+       "567        20.60         29.33          140.10     1265.0          0.11780   \n",
+       "568         7.76         24.54           47.92      181.0          0.05263   \n",
+       "\n",
+       "     mean compactness  mean concavity  mean concave points  mean symmetry  \\\n",
+       "0             0.27760         0.30010              0.14710         0.2419   \n",
+       "1             0.07864         0.08690              0.07017         0.1812   \n",
+       "2             0.15990         0.19740              0.12790         0.2069   \n",
+       "3             0.28390         0.24140              0.10520         0.2597   \n",
+       "4             0.13280         0.19800              0.10430         0.1809   \n",
+       "..                ...             ...                  ...            ...   \n",
+       "564           0.11590         0.24390              0.13890         0.1726   \n",
+       "565           0.10340         0.14400              0.09791         0.1752   \n",
+       "566           0.10230         0.09251              0.05302         0.1590   \n",
+       "567           0.27700         0.35140              0.15200         0.2397   \n",
+       "568           0.04362         0.00000              0.00000         0.1587   \n",
+       "\n",
+       "     mean fractal dimension  ...  worst radius  worst texture  \\\n",
+       "0                   0.07871  ...        25.380          17.33   \n",
+       "1                   0.05667  ...        24.990          23.41   \n",
+       "2                   0.05999  ...        23.570          25.53   \n",
+       "3                   0.09744  ...        14.910          26.50   \n",
+       "4                   0.05883  ...        22.540          16.67   \n",
+       "..                      ...  ...           ...            ...   \n",
+       "564                 0.05623  ...        25.450          26.40   \n",
+       "565                 0.05533  ...        23.690          38.25   \n",
+       "566                 0.05648  ...        18.980          34.12   \n",
+       "567                 0.07016  ...        25.740          39.42   \n",
+       "568                 0.05884  ...         9.456          30.37   \n",
+       "\n",
+       "     worst perimeter  worst area  worst smoothness  worst compactness  \\\n",
+       "0             184.60      2019.0           0.16220            0.66560   \n",
+       "1             158.80      1956.0           0.12380            0.18660   \n",
+       "2             152.50      1709.0           0.14440            0.42450   \n",
+       "3              98.87       567.7           0.20980            0.86630   \n",
+       "4             152.20      1575.0           0.13740            0.20500   \n",
+       "..               ...         ...               ...                ...   \n",
+       "564           166.10      2027.0           0.14100            0.21130   \n",
+       "565           155.00      1731.0           0.11660            0.19220   \n",
+       "566           126.70      1124.0           0.11390            0.30940   \n",
+       "567           184.60      1821.0           0.16500            0.86810   \n",
+       "568            59.16       268.6           0.08996            0.06444   \n",
+       "\n",
+       "     worst concavity  worst concave points  worst symmetry  \\\n",
+       "0             0.7119                0.2654          0.4601   \n",
+       "1             0.2416                0.1860          0.2750   \n",
+       "2             0.4504                0.2430          0.3613   \n",
+       "3             0.6869                0.2575          0.6638   \n",
+       "4             0.4000                0.1625          0.2364   \n",
+       "..               ...                   ...             ...   \n",
+       "564           0.4107                0.2216          0.2060   \n",
+       "565           0.3215                0.1628          0.2572   \n",
+       "566           0.3403                0.1418          0.2218   \n",
+       "567           0.9387                0.2650          0.4087   \n",
+       "568           0.0000                0.0000          0.2871   \n",
+       "\n",
+       "     worst fractal dimension  \n",
+       "0                    0.11890  \n",
+       "1                    0.08902  \n",
+       "2                    0.08758  \n",
+       "3                    0.17300  \n",
+       "4                    0.07678  \n",
+       "..                       ...  \n",
+       "564                  0.07115  \n",
+       "565                  0.06637  \n",
+       "566                  0.07820  \n",
+       "567                  0.12400  \n",
+       "568                  0.07039  \n",
+       "\n",
+       "[569 rows x 30 columns]>"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.info"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "5bfa2ff8",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.435788Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.435390Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.444298Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.443157Z"
+    },
+    "papermill": {
+     "duration": 0.014852,
+     "end_time": "2026-03-15T22:07:31.446254",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.431402",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mean radius                0\n",
+       "mean texture               0\n",
+       "mean perimeter             0\n",
+       "mean area                  0\n",
+       "mean smoothness            0\n",
+       "mean compactness           0\n",
+       "mean concavity             0\n",
+       "mean concave points        0\n",
+       "mean symmetry              0\n",
+       "mean fractal dimension     0\n",
+       "radius error               0\n",
+       "texture error              0\n",
+       "perimeter error            0\n",
+       "area error                 0\n",
+       "smoothness error           0\n",
+       "compactness error          0\n",
+       "concavity error            0\n",
+       "concave points error       0\n",
+       "symmetry error             0\n",
+       "fractal dimension error    0\n",
+       "worst radius               0\n",
+       "worst texture              0\n",
+       "worst perimeter            0\n",
+       "worst area                 0\n",
+       "worst smoothness           0\n",
+       "worst compactness          0\n",
+       "worst concavity            0\n",
+       "worst concave points       0\n",
+       "worst symmetry             0\n",
+       "worst fractal dimension    0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "25c4a1d5",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.454992Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.454654Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.460706Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.459297Z"
+    },
+    "papermill": {
+     "duration": 0.012248,
+     "end_time": "2026-03-15T22:07:31.462408",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.450160",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(array([0, 1]), array([212, 357]))\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(np.unique(y,return_counts = True))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "50205529",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.471179Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.470880Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.475867Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.474880Z"
+    },
+    "papermill": {
+     "duration": 0.010989,
+     "end_time": "2026-03-15T22:07:31.477317",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.466328",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "X_train,X_test,y_train,y_test = train_test_split(\n",
+    "    X,y, test_size= 0.2, random_state=42, \n",
+    ")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "a8048fa5",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.485948Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.485622Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.503489Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.502410Z"
+    },
+    "papermill": {
+     "duration": 0.024093,
+     "end_time": "2026-03-15T22:07:31.505287",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.481194",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "scaler = StandardScaler()\n",
+    "\n",
+    "X_train = scaler.fit_transform(X_train)\n",
+    "X_test = scaler.fit_transform(X_test)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "9e05440a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.514096Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.513758Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.529482Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.528286Z"
+    },
+    "papermill": {
+     "duration": 0.022171,
+     "end_time": "2026-03-15T22:07:31.531394",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.509223",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "svc = SVC()\n",
+    "svc.fit(X_train,y_train)\n",
+    "\n",
+    "y_pred = svc.predict(X_test)\n",
+    "accuracy = accuracy_score(y_test,y_pred)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "b1249f1a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2026-03-15T22:07:31.540060Z",
+     "iopub.status.busy": "2026-03-15T22:07:31.539761Z",
+     "iopub.status.idle": "2026-03-15T22:07:31.544389Z",
+     "shell.execute_reply": "2026-03-15T22:07:31.543257Z"
+    },
+    "papermill": {
+     "duration": 0.010685,
+     "end_time": "2026-03-15T22:07:31.546054",
+     "exception": false,
+     "start_time": "2026-03-15T22:07:31.535369",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "accuracy of the model: 98.24561403508771%\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(f\"accuracy of the model: {accuracy*100}%\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "databundleVersionId": 3032465,
+     "datasetId": 1829286,
+     "sourceId": 2984728,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "isGpuEnabled": false,
+   "isInternetEnabled": true,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.12"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 7.276489,
+   "end_time": "2026-03-15T22:07:32.270059",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2026-03-15T22:07:24.993570",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
